@@ -1,142 +1,348 @@
-(function(){
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var WA = 'https://wa.me/527971218676?text=';
+/* ============================================================
+   Rancho El Paredón — comportamiento del sitio
+   Secciones: menú, animaciones, galería, calendario, formulario.
+   No necesita servidor: todo corre en el navegador del visitante.
+   ============================================================ */
+(function () {
+  'use strict';
 
-  /* ---- reveal ---- */
+  var WA = 'https://wa.me/527971218676?text=';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- aparición de secciones al bajar ---------- */
   if (!reduce && 'IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, {rootMargin:'0px 0px -10% 0px', threshold:0.06});
-    document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.06 });
+    document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
   } else {
-    document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+    document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('in'); });
   }
 
-  /* ---- nav + barra móvil ---- */
-  var bar=document.getElementById('bar'), nav=document.getElementById('nav'), hero=document.querySelector('.hero');
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function(es){
-      var out = !es[0].isIntersecting;
-      bar.classList.toggle('up', out);
-      nav.classList.toggle('down', out);
-    }, {threshold:0.12}).observe(hero);
-  } else { bar.classList.add('up'); nav.classList.add('down'); }
+  /* ---------- barra superior y barra móvil ---------- */
+  var bar = document.getElementById('bar');
+  var nav = document.getElementById('nav');
+  var hero = document.querySelector('.hero');
+  if ('IntersectionObserver' in window && hero) {
+    new IntersectionObserver(function (es) {
+      var fuera = !es[0].isIntersecting;
+      bar.classList.toggle('up', fuera);
+      nav.classList.toggle('down', fuera);
+    }, { threshold: 0.12 }).observe(hero);
+  } else {
+    bar.classList.add('up'); nav.classList.add('down');
+  }
 
-  /* ---- lightbox ---- */
-  var lb=document.getElementById('lb'), lbi=document.getElementById('lbi');
-  function closeLb(){ lb.classList.remove('show'); setTimeout(function(){ lb.classList.remove('on'); },250); }
-  document.querySelectorAll('.grid figure').forEach(function(f){
-    f.addEventListener('click', function(){
-      var img=f.querySelector('img');
-      lbi.src=img.src; lbi.alt=img.alt;
-      lb.classList.add('on'); requestAnimationFrame(function(){ lb.classList.add('show'); });
+  /* ---------- menú de celular ---------- */
+  var burger = document.getElementById('burger');
+  var drawer = document.getElementById('drawer');
+  function cerrarMenu() {
+    drawer.classList.remove('open');
+    burger.classList.remove('x');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+  burger.addEventListener('click', function () {
+    var abierto = drawer.classList.toggle('open');
+    burger.classList.toggle('x', abierto);
+    burger.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+    document.body.style.overflow = abierto ? 'hidden' : '';
+  });
+  drawer.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', cerrarMenu); });
+
+  /* ---------- galería en grande ---------- */
+  var lb = document.getElementById('lb');
+  var lbi = document.getElementById('lbi');
+  function cerrarFoto() {
+    lb.classList.remove('show');
+    setTimeout(function () { lb.classList.remove('on'); }, 250);
+  }
+  document.querySelectorAll('.grid figure').forEach(function (f) {
+    f.addEventListener('click', function () {
+      var img = f.querySelector('img');
+      lbi.src = img.src; lbi.alt = img.alt;
+      lb.classList.add('on');
+      requestAnimationFrame(function () { lb.classList.add('show'); });
     });
   });
-  lb.addEventListener('click', closeLb);
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLb(); });
+  lb.addEventListener('click', cerrarFoto);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { cerrarFoto(); cerrarMenu(); }
+  });
 
-  /* ---- calendario ---- */
-  var MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  var today=new Date(); today.setHours(0,0,0,0);
-  var view=new Date(today.getFullYear(), today.getMonth(), 1);
-  var start=null, end=null;
-  var cabin='dos', price=500, maxG=2, guests=2;
+  /* ============================================================
+     CALENDARIO
+     ============================================================ */
+  var MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+               'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  var MAX_NOCHES = 30;   // arriba de esto mandamos a cotizar estancia larga
+  var MAX_MESES = 18;    // hasta dónde se puede navegar hacia adelante
 
-  var daysEl=document.getElementById('days'), mlabel=document.getElementById('mlabel');
-  var prev=document.getElementById('prev'), next=document.getElementById('next');
-  var gv=document.getElementById('gv'), gm=document.getElementById('gm'), gp=document.getElementById('gp');
-  var sum=document.getElementById('sum'), empty=document.getElementById('empty');
-  var l1=document.getElementById('l1'), v1=document.getElementById('v1'), vt=document.getElementById('vt');
-  var send=document.getElementById('send');
+  var hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+  var limite = new Date(hoy.getFullYear(), hoy.getMonth() + MAX_MESES, 1);
+  var vista = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+  var llegada = null, salida = null;
 
-  function key(d){ return d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate(); }
-  function same(a,b){ return a&&b&&key(a)===key(b); }
-  function fmt(d){ return d.getDate()+' de '+MESES[d.getMonth()]+' de '+d.getFullYear(); }
-  function money(n){ return '$'+n.toLocaleString('es-MX'); }
+  var cabana = 'dos', precio = 500, minH = 1, maxH = 2, huespedes = 2;
 
-  function renderCal(anim){
-    if(anim && !reduce){ daysEl.classList.add('swap'); }
-    setTimeout(function(){
-      var y=view.getFullYear(), m=view.getMonth();
-      mlabel.textContent = MESES[m]+' '+y;
-      var first=new Date(y,m,1);
-      var offset=(first.getDay()+6)%7;           // lunes primero
-      var total=new Date(y,m+1,0).getDate();
-      var html='';
-      for(var i=0;i<offset;i++) html+='<span class="day off"></span>';
-      for(var d=1;d<=total;d++){
-        var dt=new Date(y,m,d);
-        var past = dt < today;
-        var cls='day';
-        if(past) cls+=' off';
-        else {
-          if(start&&end&&dt>start&&dt<end) cls+=' mid';
-          if(same(dt,start)) cls+=' edge '+(end?'s1':'solo');
-          if(same(dt,end)) cls+=' edge s2';
-        }
-        html+='<button type="button" class="'+cls+'" '+(past?'disabled':'data-d="'+d+'"')+'>'+d+'</button>';
-      }
-      daysEl.innerHTML=html;
-      prev.disabled = (y===today.getFullYear() && m===today.getMonth());
-      daysEl.classList.remove('swap');
-    }, anim && !reduce ? 200 : 0);
+  var daysEl = document.getElementById('days');
+  var mlabel = document.getElementById('mlabel');
+  var prev = document.getElementById('prev');
+  var next = document.getElementById('next');
+  var gv = document.getElementById('gv');
+  var gm = document.getElementById('gm');
+  var gp = document.getElementById('gp');
+  var ghint = document.getElementById('ghint');
+  var sum = document.getElementById('sum');
+  var vacio = document.getElementById('empty');
+  var l1 = document.getElementById('l1');
+  var v1 = document.getElementById('v1');
+  var vt = document.getElementById('vt');
+
+  function clave(d) { return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); }
+  function igual(a, b) { return a && b && clave(a) === clave(b); }
+  function fecha(d) { return d.getDate() + ' de ' + MESES[d.getMonth()] + ' de ' + d.getFullYear(); }
+  function pesos(n) { return '$' + n.toLocaleString('es-MX'); }
+  function noches() {
+    if (!llegada || !salida) return 0;
+    return Math.round((salida - llegada) / 86400000);
   }
 
-  daysEl.addEventListener('click', function(e){
-    var b=e.target.closest('button[data-d]'); if(!b) return;
-    var dt=new Date(view.getFullYear(), view.getMonth(), +b.dataset.d);
-    if(!start || (start&&end) || dt<=start){ start=dt; end=null; }
-    else { end=dt; }
-    renderCal(false); update();
-  });
-  prev.addEventListener('click', function(){ view.setMonth(view.getMonth()-1); renderCal(true); });
-  next.addEventListener('click', function(){ view.setMonth(view.getMonth()+1); renderCal(true); });
+  function pintarCalendario(animar) {
+    if (animar && !reduce) daysEl.classList.add('swap');
+    setTimeout(function () {
+      var y = vista.getFullYear(), m = vista.getMonth();
+      mlabel.textContent = MESES[m] + ' ' + y;
+      var primero = new Date(y, m, 1);
+      var hueco = (primero.getDay() + 6) % 7;        // la semana empieza en lunes
+      var total = new Date(y, m + 1, 0).getDate();
+      var html = '';
+      for (var i = 0; i < hueco; i++) html += '<span class="day off"></span>';
+      for (var d = 1; d <= total; d++) {
+        var dt = new Date(y, m, d);
+        var pasado = dt < hoy;
+        var cls = 'day';
+        if (pasado) {
+          cls += ' off';
+        } else {
+          if (llegada && salida && dt > llegada && dt < salida) cls += ' mid';
+          if (igual(dt, llegada)) cls += ' edge ' + (salida ? 's1' : 'solo');
+          if (igual(dt, salida)) cls += ' edge s2';
+        }
+        html += '<button type="button" class="' + cls + '" ' +
+                (pasado ? 'disabled' : 'data-d="' + d + '"') + '>' + d + '</button>';
+      }
+      daysEl.innerHTML = html;
+      prev.disabled = (y === hoy.getFullYear() && m === hoy.getMonth());
+      next.disabled = (vista >= limite);
+      daysEl.classList.remove('swap');
+    }, animar && !reduce ? 200 : 0);
+  }
 
-  /* ---- cabaña ---- */
-  document.getElementById('seg').addEventListener('click', function(e){
-    var b=e.target.closest('button[data-cabin]'); if(!b) return;
-    document.querySelectorAll('#seg button').forEach(function(x){ x.classList.remove('on'); });
-    b.classList.add('on');
-    cabin=b.dataset.cabin; price=+b.dataset.price; maxG=+b.dataset.max;
-    if(guests>maxG) guests=maxG;
-    if(cabin==='familiar' && guests<4) guests=4;
-    update();
-  });
-
-  /* ---- huéspedes ---- */
-  function minG(){ return cabin==='familiar' ? 4 : 1; }
-  gm.addEventListener('click', function(){ if(guests>minG()){ guests--; update(); } });
-  gp.addEventListener('click', function(){ if(guests<maxG){ guests++; update(); } });
-
-  function update(){
-    gv.textContent=guests;
-    gm.disabled = guests<=minG();
-    gp.disabled = guests>=maxG;
-
-    if(start&&end){
-      var nights=Math.round((end-start)/86400000);
-      var subtotal=nights*price;
-      l1.textContent = money(price)+' × '+nights+(nights===1?' noche':' noches');
-      v1.textContent = money(subtotal);
-      vt.textContent = money(subtotal);
-      sum.hidden=false; empty.hidden=true;
-      send.setAttribute('aria-disabled','false');
-      var nom = cabin==='familiar' ? 'la cabaña familiar' : 'la cabaña para dos';
-      var msg = 'Hola, quiero reservar '+nom+'.\n'+
-                'Llegada: '+fmt(start)+'\n'+
-                'Salida: '+fmt(end)+'\n'+
-                'Noches: '+nights+'\n'+
-                'Huéspedes: '+guests+'\n'+
-                'Total estimado: '+money(subtotal)+' (sin limpieza)\n'+
-                '¿Están libres esas fechas?';
-      send.href = WA + encodeURIComponent(msg);
+  daysEl.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-d]');
+    if (!b) return;
+    var dt = new Date(vista.getFullYear(), vista.getMonth(), +b.dataset.d);
+    // Primer toque, o reinicio si ya había rango, o si tocan antes de la llegada
+    if (!llegada || (llegada && salida) || dt <= llegada) {
+      llegada = dt; salida = null;
     } else {
-      sum.hidden=true; empty.hidden=false;
-      empty.textContent = start ? 'Ahora toca tu día de salida.' : 'Toca tu día de llegada y luego el de salida.';
-      send.setAttribute('aria-disabled','true');
-      send.href='#';
+      salida = dt;
+    }
+    pintarCalendario(false);
+    actualizar();
+    formmsg.textContent = '';
+    formmsg.className = 'formmsg';
+  });
+
+  prev.addEventListener('click', function () {
+    if (prev.disabled) return;
+    vista.setMonth(vista.getMonth() - 1); pintarCalendario(true);
+  });
+  next.addEventListener('click', function () {
+    if (next.disabled) return;
+    vista.setMonth(vista.getMonth() + 1); pintarCalendario(true);
+  });
+
+  /* ---------- selección de cabaña ---------- */
+  function elegirCabana(b) {
+    document.querySelectorAll('#seg button').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    cabana = b.dataset.cabin;
+    precio = +b.dataset.price;
+    minH = +b.dataset.min;
+    maxH = +b.dataset.max;
+    if (huespedes > maxH) huespedes = maxH;
+    if (huespedes < minH) huespedes = minH;
+    actualizar();
+  }
+  document.getElementById('seg').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-cabin]');
+    if (b) elegirCabana(b);
+  });
+  // Los botones "Elegir fechas" de cada cabaña preseleccionan la correcta
+  document.querySelectorAll('[data-pick]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      var b = document.querySelector('#seg button[data-cabin="' + a.dataset.pick + '"]');
+      if (b) elegirCabana(b);
+    });
+  });
+
+  /* ---------- huéspedes ---------- */
+  gm.addEventListener('click', function () { if (huespedes > minH) { huespedes--; actualizar(); } });
+  gp.addEventListener('click', function () { if (huespedes < maxH) { huespedes++; actualizar(); } });
+
+  /* ---------- resumen ---------- */
+  function actualizar() {
+    gv.textContent = huespedes;
+    gm.disabled = huespedes <= minH;
+    gp.disabled = huespedes >= maxH;
+    ghint.textContent = cabana === 'familiar'
+      ? 'La cabaña familiar recibe de 4 a 8 personas.'
+      : 'La cabaña para dos recibe máximo 2 personas.';
+
+    var n = noches();
+    if (n > 0) {
+      var subtotal = n * precio;
+      l1.textContent = pesos(precio) + ' × ' + n + (n === 1 ? ' noche' : ' noches');
+      v1.textContent = pesos(subtotal);
+      vt.textContent = pesos(subtotal);
+      sum.hidden = false; vacio.hidden = true;
+    } else {
+      sum.hidden = true; vacio.hidden = false;
+      vacio.textContent = llegada
+        ? 'Ahora toca tu día de salida.'
+        : 'Toca tu día de llegada y luego el de salida.';
     }
   }
 
-  renderCal(false); update();
+  /* ============================================================
+     FORMULARIO Y VALIDACIONES
+     ============================================================ */
+  var form = document.getElementById('form');
+  var nombre = document.getElementById('nombre');
+  var tel = document.getElementById('tel');
+  var correo = document.getElementById('correo');
+  var notas = document.getElementById('notas');
+  var acepta = document.getElementById('acepta');
+  var formmsg = document.getElementById('formmsg');
+
+  function marcarError(campo, idError, texto) {
+    document.getElementById(idError).textContent = texto;
+    if (campo) campo.setAttribute('aria-invalid', 'true');
+  }
+  function limpiarError(idError, campo) {
+    var el = document.getElementById('e-' + idError);
+    if (el) el.textContent = '';
+    if (campo) campo.removeAttribute('aria-invalid');
+  }
+
+  // El teléfono solo acepta dígitos mientras se escribe
+  tel.addEventListener('input', function () {
+    tel.value = tel.value.replace(/\D/g, '').slice(0, 10);
+    limpiarError('tel', tel);
+  });
+  nombre.addEventListener('input', function () { limpiarError('nombre', nombre); });
+  correo.addEventListener('input', function () { limpiarError('correo', correo); });
+  acepta.addEventListener('change', function () { limpiarError('acepta'); });
+
+  function validar() {
+    var fallas = [];
+    ['nombre', 'tel', 'correo', 'acepta'].forEach(function (k) { limpiarError(k); });
+    [nombre, tel, correo].forEach(function (c) { c.removeAttribute('aria-invalid'); });
+    formmsg.textContent = ''; formmsg.className = 'formmsg';
+
+    // Nombre: al menos 2 caracteres y que no sean solo números
+    var nom = nombre.value.trim();
+    if (nom.length < 2) {
+      marcarError(nombre, 'e-nombre', 'Escribe tu nombre.');
+      fallas.push(nombre);
+    } else if (!/[A-Za-zÁÉÍÓÚÑáéíóúñ]/.test(nom)) {
+      marcarError(nombre, 'e-nombre', 'El nombre debe llevar letras.');
+      fallas.push(nombre);
+    }
+
+    // Teléfono: exactamente 10 dígitos
+    var t = tel.value.replace(/\D/g, '');
+    if (t.length === 0) {
+      marcarError(tel, 'e-tel', 'Necesitamos un teléfono para contestarte.');
+      fallas.push(tel);
+    } else if (t.length !== 10) {
+      marcarError(tel, 'e-tel', 'Deben ser 10 dígitos. Llevas ' + t.length + '.');
+      fallas.push(tel);
+    }
+
+    // Correo: opcional, pero si lo llenan tiene que servir
+    var c = correo.value.trim();
+    if (c && !/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(c)) {
+      marcarError(correo, 'e-correo', 'Ese correo no se ve completo.');
+      fallas.push(correo);
+    }
+
+    // Fechas
+    var n = noches();
+    if (!llegada || !salida) {
+      formmsg.textContent = 'Elige tu día de llegada y tu día de salida en el calendario.';
+      formmsg.className = 'formmsg bad';
+      if (!fallas.length) fallas.push(daysEl);
+    } else if (n > MAX_NOCHES) {
+      formmsg.textContent = 'Son más de ' + MAX_NOCHES + ' noches. Para estancias así manejamos precio cerrado: escríbenos directo y te cotizamos.';
+      formmsg.className = 'formmsg bad';
+      if (!fallas.length) fallas.push(daysEl);
+    }
+
+    // Huéspedes dentro del rango de la cabaña
+    if (huespedes < minH || huespedes > maxH) {
+      formmsg.textContent = 'El número de huéspedes no cabe en esa cabaña.';
+      formmsg.className = 'formmsg bad';
+      if (!fallas.length) fallas.push(gp);
+    }
+
+    // Condiciones
+    if (!acepta.checked) {
+      document.getElementById('e-acepta').textContent = 'Marca que aceptas las condiciones.';
+      fallas.push(acepta);
+    }
+
+    return fallas;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var fallas = validar();
+
+    if (fallas.length) {
+      if (!formmsg.textContent) {
+        formmsg.textContent = 'Revisa los datos marcados en rojo.';
+        formmsg.className = 'formmsg bad';
+      }
+      fallas[0].focus({ preventScroll: false });
+      return;
+    }
+
+    var n = noches();
+    var nom = cabana === 'familiar' ? 'la cabaña familiar' : 'la cabaña para dos';
+    var texto =
+      'Hola, quiero reservar ' + nom + '.\n\n' +
+      'Nombre: ' + nombre.value.trim() + '\n' +
+      'Teléfono: ' + tel.value + '\n' +
+      (correo.value.trim() ? 'Correo: ' + correo.value.trim() + '\n' : '') +
+      'Llegada: ' + fecha(llegada) + '\n' +
+      'Salida: ' + fecha(salida) + '\n' +
+      'Noches: ' + n + '\n' +
+      'Huéspedes: ' + huespedes + '\n' +
+      'Total estimado: ' + pesos(n * precio) + ' (sin limpieza)\n' +
+      (notas.value.trim() ? '\nNotas: ' + notas.value.trim() + '\n' : '') +
+      '\n¿Están libres esas fechas?';
+
+    formmsg.textContent = 'Abriendo WhatsApp con tu solicitud...';
+    formmsg.className = 'formmsg good';
+    window.open(WA + encodeURIComponent(texto), '_blank', 'noopener');
+  });
+
+  /* ---------- arranque ---------- */
+  pintarCalendario(false);
+  actualizar();
 })();

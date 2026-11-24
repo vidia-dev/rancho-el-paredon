@@ -1,54 +1,64 @@
 # Rancho El Paredón — sitio web
 
-Sitio de una sola página. No necesita servidor, base de datos ni instalar nada.
-Para verlo: abre `index.html` con doble clic y se abre en tu navegador.
+Sitio de una sola página, sin servidor ni base de datos.
+Para verlo en tu computadora: abre `index.html` con doble clic.
+En vivo: https://vidia-dev.github.io/rancho-el-paredon/
 
 ## Archivos
 
 | Archivo | Qué contiene |
 |---|---|
-| `index.html` | **Todos los textos.** Aquí cambias precios, descripciones y preguntas frecuentes. |
+| `index.html` | **Todos los textos** y la estructura de las secciones. |
 | `estilos.css` | Colores, tipografías, espaciados. |
-| `script.js` | El calendario, la galería y las animaciones. |
+| `script.js` | Menú, calendario, validaciones del formulario, galería. |
 | `img/` | Las fotos. |
+
+## Secciones del sitio
+
+En `index.html` cada sección está marcada con un comentario grande, por ejemplo
+`<!-- ===== NOSOTROS ===== -->`. Busca ese comentario para ubicarte rápido.
+
+Portada · Puntos clave · Nosotros · Cabañas · Amenidades · Reservar ·
+Estancias largas · Galería · Qué hacer cerca · Cómo llegar · Condiciones ·
+Preguntas frecuentes · Contacto
 
 ## Cambiar textos
 
-Abre `index.html` con cualquier editor de texto (el Bloc de notas sirve; mejor si
-descargas **Visual Studio Code**, es gratis). Busca el texto que quieres cambiar
-y escríbelo distinto. Guarda y recarga el navegador.
-
-Todo lo que está entre `>` y `<` es texto visible. Por ejemplo:
+Abre `index.html` en IntelliJ. Todo lo que está entre `>` y `<` es texto visible:
 
     <h3>Cabaña familiar</h3>
 
 Cambias solo `Cabaña familiar`, no las etiquetas de los lados.
 
-## Cambiar precios
+## Cambiar precios — OJO
 
-Los precios están en **tres lugares** y los tres tienen que coincidir:
+El precio de cada cabaña aparece en **tres lugares** y los tres tienen que
+coincidir, o el calculador le cotizará mal al cliente:
 
-1. En la tarjeta de cada cabaña, busca `<p class="price"><b>$500</b>`
-2. En los botones del calendario, busca `data-price="500"`
-3. En el texto de los puntos clave arriba: `Desde $500 la noche`
+1. Los puntos clave de arriba: `Desde $500 la noche`
+2. La tarjeta de la cabaña: `<p class="price"><b>$500</b>`
+3. El botón del calendario: `data-price="500"`
+
+En ese mismo botón del calendario también está la capacidad:
+`data-min="4" data-max="8"`.
+
+## Cambiar el teléfono
+
+Busca `527971218676` en `index.html` y en `script.js`. El `52` del inicio es el
+código de México y no se quita.
 
 ## Cambiar o agregar fotos
 
-Mete tu foto en la carpeta `img/` y en `index.html` cambia el nombre del archivo.
-Por ejemplo, para la foto principal busca:
+Mete tu foto en `img/` y cambia el nombre del archivo en `index.html`.
 
-    <img class="hero-img" src="img/fachada-jardin.jpg"
-
-y cambia `fachada-jardin.jpg` por el nombre de tu archivo.
-
-**Importante:** antes de subirlas, reduce las fotos a **1200 píxeles de ancho**
-y guárdalas como JPG. Una foto de celular pesa 3 MB y hace que la página tarde
-en abrir; reducida pesa 200 KB y se ve igual. Puedes usar squoosh.app (gratis).
+**Antes de subirlas**, reduce las fotos a **1200 píxeles de ancho** y guárdalas
+como JPG. Una foto de celular pesa 3 MB y hace lenta la página; reducida pesa
+200 KB y se ve igual. Usa squoosh.app, es gratis.
 
 ### Fotos del interior
 
-En la sección "Por dentro" hay seis recuadros punteados esperando foto. Busca
-`class="soon"` en `index.html`. Cuando tengas la foto, cambia esta línea:
+En la sección de galería hay seis recuadros punteados esperando foto. Busca
+`class="soon"`. Para cada uno, cambia esta línea:
 
     <div class="soon">Jacuzzi</div>
 
@@ -56,34 +66,39 @@ por esta:
 
     <figure><img src="img/jacuzzi.jpg" alt="Jacuzzi de la cabaña familiar" loading="lazy"></figure>
 
-Y cambia el contenedor `<div class="soonwrap rv">` por `<div class="grid rv">`
-cuando ya tengas todas, para que se vean igual que la galería de arriba.
+Cuando ya tengas las seis, cambia el contenedor `<div class="soonwrap rv">` por
+`<div class="grid rv">` para que se vean igual que la galería de arriba y se
+puedan abrir en grande.
 
-## Publicar en internet con tu propio dominio
+## Ajustes del calendario
 
-La opción más fácil y gratuita:
+En `script.js`, hasta arriba de la sección CALENDARIO:
 
-1. Entra a **netlify.com** y crea una cuenta.
-2. Busca la opción de arrastrar y soltar ("Deploy manually" o "Drag and drop").
-3. Arrastra la carpeta completa `rancho-el-paredon`.
-4. Te da un enlace tipo `rancho-paredon.netlify.app` al instante.
+    var MAX_NOCHES = 30;   // arriba de esto manda a cotizar estancia larga
+    var MAX_MESES  = 18;   // hasta qué tan adelante se puede reservar
 
-Para tener `ranchoelparedon.com`, compra el dominio en Namecheap o GoDaddy
-(entre 200 y 400 pesos al año) y conéctalo desde la configuración de Netlify.
+## Lo que valida el formulario
 
-Alternativa si prefieres GitHub: crea un repositorio, sube estos archivos y
-activa **GitHub Pages** en Settings → Pages.
+- Nombre con al menos 2 caracteres y que lleve letras
+- Teléfono de exactamente 10 dígitos (solo deja escribir números)
+- Correo opcional, pero si lo llenan debe tener formato válido
+- Llegada y salida seleccionadas, y salida posterior a la llegada
+- Huéspedes dentro de la capacidad de la cabaña elegida
+- Casilla de condiciones marcada
 
-## Antes de publicar, revisa
+Si algo falla, marca el campo en rojo y lleva el cursor al primer error.
+Al pasar todo, abre WhatsApp con el mensaje armado.
 
-- Que el teléfono esté bien en todos lados: busca `527971218676` en `index.html`.
-  El `52` del inicio es el código de México, no lo quites.
-- Que los precios coincidan en los tres lugares.
-- Ábrela en tu celular y en una computadora.
+## Publicar cambios
 
-## Notas
+El sitio está en GitHub Pages desde la rama `main`. Cada vez que hagas
+**commit and push**, el sitio se actualiza solo en uno o dos minutos.
 
-- El calendario **cotiza**, no bloquea fechas ocupadas. La disponibilidad la
-  confirmas tú por WhatsApp.
-- Las tipografías se cargan desde Google Fonts, así que la página necesita
-  internet para verse con el diseño correcto.
+Desde IntelliJ: `Ctrl+K` para commit, `Ctrl+Shift+K` para push.
+
+## Pendientes
+
+- Fotos del interior (recámara, baño, sala, jacuzzi, cocina, parrilla)
+- Personalizar el texto de la sección "Nosotros" con la historia real
+- Definir y escribir la política de cancelación
+- Confirmar los lugares de "Qué hacer cerca" y agregar distancias reales

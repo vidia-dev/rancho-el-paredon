@@ -4,10 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rancho El Paredón — Cabañas en Tetela de Ocampo, Puebla</title>
-<meta name="description" content="Cabañas de piedra en Puente Seco, Tetela de Ocampo, Puebla. Una para dos, una familiar con jacuzzi, chimenea y parrilla. Se aceptan mascotas. Desde $500 la noche.">
+<meta name="description" content="Dos cabañas de piedra en Puente Seco, Tetela de Ocampo, Puebla. Una para dos y una familiar con jacuzzi, chimenea y parrilla. Se aceptan mascotas. Desde $500 la noche.">
+<meta name="theme-color" content="#13241F">
 <meta property="og:title" content="Rancho El Paredón — Cabañas en la Sierra Norte de Puebla">
 <meta property="og:description" content="Dos cabañas en Puente Seco, Tetela de Ocampo. Jacuzzi, chimenea, parrilla y bosque alrededor.">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="es_MX">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
@@ -15,23 +17,40 @@
 </head>
 <body>
 
+<!-- ===================== NAVEGACIÓN ===================== -->
 <nav class="nav" id="nav">
   <div class="wrap">
-    <a class="brand" href="#top">Rancho El Paredón</a>
+    <a class="brand" href="#inicio">Rancho El Paredón</a>
+    <a class="lnk" href="#nosotros">Nosotros</a>
     <a class="lnk" href="#cabanas">Cabañas</a>
+    <a class="lnk" href="#amenidades">Amenidades</a>
     <a class="lnk" href="#reservar">Reservar</a>
-    <a class="lnk" href="#rancho">Fotos</a>
-    <a class="lnk" href="#llegar">Cómo llegar</a>
-    <a class="btn btn-fill" href="https://wa.me/527971218676?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20las%20caba%C3%B1as%20del%20Rancho%20El%20Pared%C3%B3n">WhatsApp</a>
+    <a class="lnk" href="#cerca">Qué hacer</a>
+    <a class="btn btn-fill" href="#reservar">Reservar</a>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
-<header class="hero" id="top">
-  <img class="hero-img" src="img/fachada-jardin.jpg" alt="Cabaña de piedra con techo de teja roja en el Rancho El Paredón">
+<div class="drawer" id="drawer">
+  <a href="#nosotros">Nosotros</a>
+  <a href="#cabanas">Cabañas</a>
+  <a href="#amenidades">Amenidades</a>
+  <a href="#reservar">Reservar</a>
+  <a href="#galeria">Fotos</a>
+  <a href="#cerca">Qué hacer cerca</a>
+  <a href="#condiciones">Condiciones</a>
+  <a href="#contacto">Contacto</a>
+</div>
+
+<!-- ===================== PORTADA ===================== -->
+<header class="hero" id="inicio">
+  <img class="hero-img" src="img/fachada-jardin.jpg" alt="Cabaña de piedra con techo de teja roja rodeada de árboles en el Rancho El Paredón">
   <div class="wrap">
     <p class="eyebrow rise d1">Puente Seco · Tetela de Ocampo, Puebla</p>
     <h1 class="rise d2">Rancho<br>El Paredón</h1>
-    <p class="lede rise d3">Cabañas de piedra en la Sierra Norte. Chimenea, jacuzzi y el bosque empezando en la puerta.</p>
+    <p class="lede rise d3">Dos cabañas de piedra en la Sierra Norte. Chimenea encendida, jacuzzi, y el bosque empezando justo en la puerta.</p>
     <div class="cta-row rise d4">
       <a class="btn btn-fill" href="#reservar">Ver fechas y precios</a>
       <a class="btn btn-line" href="#cabanas">Conocer las cabañas</a>
@@ -40,116 +59,231 @@
   <div class="scroll-hint"></div>
 </header>
 
+<!-- ===================== PUNTOS CLAVE ===================== -->
 <section>
   <div class="wrap">
     <ul class="keys rv">
-      <li><b>Desde $500 la noche</b><span>Dos personas, todo incluido.</span></li>
-      <li><b>Tus perros son bienvenidos</b><span>En la cabaña familiar, sin cargo extra.</span></li>
-      <li><b>Quédate lo que quieras</b><span>Una noche, un fin de semana o un mes completo.</span></li>
+      <li><b>Desde $500 la noche</b><span>Dos personas, sin cargos escondidos.</span></li>
+      <li><b>Tus perros se quedan contigo</b><span>En la cabaña familiar, sin cobro extra.</span></li>
+      <li><b>Una noche o un mes</b><span>Rentamos por noche, por semana y por temporada.</span></li>
     </ul>
   </div>
 </section>
 
-<section id="cabanas" class="sec-alt">
+<!-- ===================== NOSOTROS ===================== -->
+<section id="nosotros" class="sec-alt">
   <div class="wrap">
+    <div class="about rv">
+      <div>
+        <p class="kicker">Nosotros</p>
+        <h2>Un pedazo de sierra, puesto en pie a mano</h2>
+        <p>El Paredón está en Puente Seco, dentro del municipio de Tetela de Ocampo. Levantamos las cabañas con la piedra del lugar, vigas de madera y teja de barro, buscando que no desentonaran con el cerro que tienen enfrente.</p>
+        <p>No somos un hotel. Son dos cabañas, cada una con su terreno alrededor, pensadas para que llegues y no veas a nadie más si no quieres. Aquí se escucha el viento en los pinos y poco más.</p>
+        <p class="pull">Seguimos construyendo. Cada temporada le agregamos algo, y preferimos ir despacio a terminar rápido y mal.</p>
+      </div>
+      <div class="about-photo">
+        <img src="img/terraza.jpg" alt="Terraza de piedra y techo de teja de una de las cabañas" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CABAÑAS ===================== -->
+<section id="cabanas">
+  <div class="wrap">
+    <p class="kicker rv">Hospedaje</p>
     <h2 class="rv">Las cabañas</h2>
 
     <article class="cabin rv">
-      <div class="cabin-photo"><img src="img/atardecer.jpg" alt="Cabaña para dos al anochecer" loading="lazy"></div>
+      <div class="cabin-photo"><img src="img/atardecer.jpg" alt="Cabaña para dos iluminada al anochecer" loading="lazy"></div>
       <div>
         <h3>Cabaña para dos</h3>
-        <p class="cap">2 personas</p>
-        <p class="desc">La más íntima del rancho. Baño completo privado, mini cocina y un minibar que corre por cuenta de la casa. Llega a la hora que quieras: aquí no hay horario de entrada.</p>
-        <ul class="feats"><li>Baño completo privado</li><li>Mini cocina</li><li>Minibar de cortesía</li><li>Wifi</li><li>Entrada libre</li></ul>
+        <p class="cap">2 personas · 1 recámara</p>
+        <p class="desc">La más íntima del rancho. Baño completo privado, mini cocina equipada y un minibar que corre por cuenta de la casa. No manejamos horario de entrada: llegas cuando te acomode y nosotros te esperamos.</p>
+        <ul class="feats">
+          <li>Baño completo privado</li><li>Mini cocina</li><li>Minibar de cortesía</li>
+          <li>Wifi</li><li>Entrada a cualquier hora</li>
+        </ul>
         <p class="price"><b>$500</b><span>por noche</span></p>
-        <a class="btn btn-fill" href="#reservar">Elegir fechas</a>
+        <a class="btn btn-fill" href="#reservar" data-pick="dos">Elegir fechas</a>
       </div>
     </article>
 
     <article class="cabin rv">
-      <div class="cabin-photo"><img src="img/cabana-angulo.jpg" alt="Cabaña familiar del Rancho El Paredón" loading="lazy"></div>
+      <div class="cabin-photo"><img src="img/cabana-angulo.jpg" alt="Cabaña familiar del Rancho El Paredón vista desde el jardín" loading="lazy"></div>
       <div>
         <h3>Cabaña familiar</h3>
         <p class="cap">De 4 a 8 personas</p>
-        <p class="desc">Jacuzzi, chimenea para las noches frías de la sierra y parrilla afuera para la carne asada. Mini cocina para que se organicen solos, y las mascotas se quedan con ustedes.</p>
-        <ul class="feats"><li>Jacuzzi</li><li>Chimenea</li><li>Parrilla</li><li>Mini cocina</li><li>Wifi</li><li>Acepta mascotas</li></ul>
+        <p class="desc">Jacuzzi para quitarse el frío, chimenea para las noches de sierra y parrilla afuera para la carne asada. Trae mini cocina para que se organicen a su ritmo, y las mascotas se quedan adentro con ustedes.</p>
+        <ul class="feats">
+          <li>Jacuzzi</li><li>Chimenea</li><li>Parrilla</li><li>Mini cocina</li>
+          <li>Wifi</li><li>Acepta mascotas</li>
+        </ul>
         <p class="price"><b>$800</b><span>por noche</span></p>
-        <a class="btn btn-fill" href="#reservar">Elegir fechas</a>
+        <a class="btn btn-fill" href="#reservar" data-pick="familiar">Elegir fechas</a>
       </div>
     </article>
   </div>
 </section>
 
+<!-- ===================== AMENIDADES ===================== -->
+<section id="amenidades" class="sec-alt">
+  <div class="wrap">
+    <p class="kicker rv">Qué incluye</p>
+    <h2 class="rv">Amenidades</h2>
+    <p class="prose rv">Todo lo de esta lista va dentro del precio por noche, salvo lo que indique otra cosa.</p>
+
+    <div class="amen rv">
+      <div>
+        <h3>Dentro de la cabaña</h3>
+        <ul>
+          <li>Baño completo privado</li>
+          <li>Agua caliente</li>
+          <li>Mini cocina equipada</li>
+          <li>Ropa de cama y toallas</li>
+          <li>Chimenea <span class="tag">Familiar</span></li>
+          <li>Jacuzzi <span class="tag">Familiar</span></li>
+          <li>Minibar de cortesía <span class="tag">Para dos</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>En el rancho</h3>
+        <ul>
+          <li>Parrilla para asar <span class="tag">Familiar</span></li>
+          <li>Jardín y terreno privado</li>
+          <li>Estacionamiento dentro de la propiedad</li>
+          <li>Fogatero al aire libre</li>
+          <li>Bosque y senderos alrededor</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Servicios</h3>
+        <ul>
+          <li>Wifi en las dos cabañas</li>
+          <li>Se admiten mascotas <span class="tag">Familiar</span></li>
+          <li>Entrada a cualquier hora <span class="tag">Para dos</span></li>
+          <li>Estancias por semana o mes</li>
+          <li>Limpieza <span class="tag">Se cobra aparte</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== RESERVAR ===================== -->
 <section id="reservar">
   <div class="wrap">
     <div class="booklay">
       <div class="rv">
-        <h2>Elige tus fechas</h2>
-        <p class="prose">Arma tu estancia aquí y te calculamos el total. Al terminar, el botón abre WhatsApp con todos los datos escritos: solo nos confirmas y apartamos.</p>
-        <p class="hint">El calendario es para cotizar. La disponibilidad final te la confirmamos por mensaje.</p>
+        <p class="kicker">Reservaciones</p>
+        <h2>Arma tu estancia</h2>
+        <p>Elige cabaña, fechas y cuántos vienen. Te calculamos el total y, al enviar, se abre WhatsApp con todos los datos ya escritos. Nosotros te confirmamos la disponibilidad.</p>
+        <p class="hint">Este calendario cotiza, no aparta. Las fechas quedan apartadas hasta que confirmemos por mensaje y recibamos el anticipo.</p>
       </div>
 
-      <div class="book rv">
+      <form class="book rv" id="form" novalidate>
+        <p class="step">1 · Elige la cabaña</p>
         <div class="seg" id="seg">
-          <button type="button" data-cabin="dos" data-price="500" data-max="2" class="on">Para dos<small>$500 / noche</small></button>
-          <button type="button" data-cabin="familiar" data-price="800" data-max="8">Familiar<small>$800 / noche</small></button>
+          <button type="button" data-cabin="dos" data-price="500" data-min="1" data-max="2" class="on">
+            Para dos<small>$500 / noche</small></button>
+          <button type="button" data-cabin="familiar" data-price="800" data-min="4" data-max="8">
+            Familiar<small>$800 / noche</small></button>
         </div>
 
+        <p class="step">2 · Elige tus fechas</p>
         <div class="cal-head">
-          <button type="button" id="prev" aria-label="Mes anterior">‹</button>
+          <button type="button" id="prev" aria-label="Mes anterior">&lsaquo;</button>
           <strong id="mlabel"></strong>
-          <button type="button" id="next" aria-label="Mes siguiente">›</button>
+          <button type="button" id="next" aria-label="Mes siguiente">&rsaquo;</button>
         </div>
-        <div class="dow"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+        <div class="dow" aria-hidden="true">
+          <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+        </div>
         <div class="days" id="days"></div>
 
+        <p class="step">3 · Cuántos vienen</p>
         <div class="guests">
           <span class="lab">Huéspedes</span>
           <div class="stepper">
-            <button type="button" id="gm" aria-label="Menos huéspedes">−</button>
+            <button type="button" id="gm" aria-label="Menos huéspedes">&minus;</button>
             <output id="gv">2</output>
             <button type="button" id="gp" aria-label="Más huéspedes">+</button>
           </div>
         </div>
+        <p class="hint" id="ghint"></p>
+
+        <p class="step">4 · Tus datos</p>
+        <div class="dosfilas">
+          <div class="field">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" autocomplete="name" placeholder="Como te llamamos">
+            <span class="err" id="e-nombre"></span>
+          </div>
+          <div class="field">
+            <label for="tel">Teléfono (10 dígitos)</label>
+            <input type="tel" id="tel" name="tel" inputmode="numeric" autocomplete="tel" placeholder="2221234567">
+            <span class="err" id="e-tel"></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="correo">Correo <span style="opacity:.7">(opcional)</span></label>
+          <input type="email" id="correo" name="correo" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+          <span class="err" id="e-correo"></span>
+        </div>
+        <div class="field">
+          <label for="notas">Algo que debamos saber <span style="opacity:.7">(opcional)</span></label>
+          <textarea id="notas" name="notas" maxlength="400" placeholder="Si vienen con mascota, si llegan de noche, si celebran algo..."></textarea>
+        </div>
+
+        <label class="check">
+          <input type="checkbox" id="acepta">
+          <span>Leí las <a href="#condiciones">condiciones de hospedaje</a> y estoy de acuerdo.</span>
+        </label>
+        <span class="err" id="e-acepta"></span>
 
         <div class="tally" id="tally">
           <p class="hint" id="empty">Toca tu día de llegada y luego el de salida.</p>
           <div id="sum" hidden>
             <div class="tline"><span id="l1"></span><span id="v1"></span></div>
             <div class="tline"><span>Limpieza</span><span>Se cotiza aparte</span></div>
-            <div class="tline total"><span>Total</span><span id="vt"></span></div>
+            <div class="tline total"><span>Total estimado</span><span id="vt"></span></div>
           </div>
         </div>
 
-        <a class="btn btn-fill" id="send" aria-disabled="true" href="#">Enviar por WhatsApp</a>
-      </div>
+        <button type="submit" class="btn btn-fill" id="enviar">Enviar por WhatsApp</button>
+        <p class="formmsg" id="formmsg" role="status" aria-live="polite"></p>
+      </form>
     </div>
   </div>
 </section>
 
-<section class="sec-alt">
+<!-- ===================== ESTANCIAS LARGAS ===================== -->
+<section class="sec-deep">
   <div class="wrap prose rv">
+    <p class="kicker">Temporadas</p>
     <h2>Estancias largas</h2>
-    <p>La cabaña familiar se puede rentar por varios días, por semana o por mes. Si buscas cambiar de aire una temporada, trabajar lejos de la ciudad o pasar aquí las vacaciones completas, escríbenos y armamos un precio para tu estancia.</p>
-    <div class="long"><p style="margin:0">El servicio de limpieza se cobra aparte del precio por noche.</p></div>
+    <p>La cabaña familiar se renta por días, por semana o por mes completo. Si quieres cambiar de aire una temporada, trabajar lejos del ruido o pasar aquí las vacaciones enteras, escríbenos con tus fechas y armamos un precio para toda la estancia.</p>
+    <p class="soft">Para estancias de más de una semana manejamos precio cerrado, no por noche.</p>
     <a class="maplink" href="https://wa.me/527971218676?text=Hola%2C%20quiero%20cotizar%20una%20estancia%20larga%20en%20la%20caba%C3%B1a%20familiar.">Cotizar una estancia larga</a>
   </div>
 </section>
 
-<section id="rancho">
+<!-- ===================== GALERÍA ===================== -->
+<section id="galeria">
   <div class="wrap">
+    <p class="kicker rv">Fotos</p>
     <h2 class="rv">El rancho</h2>
     <div class="grid rv">
       <figure><img src="img/terraza.jpg" alt="Terraza de piedra y techo de teja" loading="lazy"></figure>
       <figure><img src="img/entrada.jpg" alt="Entrada de madera de la cabaña" loading="lazy"></figure>
-      <figure><img src="img/ventanales.jpg" alt="Fachada de la cabaña con ventanales" loading="lazy"></figure>
-      <figure><img src="img/cielo-sierra.jpg" alt="La cabaña con el cielo de la sierra" loading="lazy"></figure>
-      <figure><img src="img/camino.jpg" alt="Camino de terracería entre pinos" loading="lazy"></figure>
+      <figure><img src="img/ventanales.jpg" alt="Fachada de la cabaña con ventanales de madera" loading="lazy"></figure>
+      <figure><img src="img/cielo-sierra.jpg" alt="La cabaña bajo el cielo de la sierra" loading="lazy"></figure>
+      <figure><img src="img/camino.jpg" alt="Camino de terracería entre pinos para llegar al rancho" loading="lazy"></figure>
       <figure><img src="img/fachada-jardin.jpg" alt="La cabaña vista desde el jardín" loading="lazy"></figure>
     </div>
 
     <h2 class="rv" style="margin-top:3.5rem">Por dentro</h2>
-    <p class="prose rv">Estamos tomando las fotos del interior de las dos cabañas.</p>
+    <p class="prose rv">Estamos terminando las fotos del interior de las dos cabañas.</p>
     <div class="soonwrap rv">
       <div class="soon">Recámara<br>cabaña para dos</div>
       <div class="soon">Baño<br>cabaña para dos</div>
@@ -161,62 +295,124 @@
   </div>
 </section>
 
-<section class="sec-deep" id="llegar">
+<!-- ===================== QUÉ HACER CERCA ===================== -->
+<section id="cerca" class="sec-dusk">
+  <div class="wrap">
+    <p class="kicker rv">Alrededores</p>
+    <h2 class="rv">Qué hacer cerca</h2>
+    <p class="prose rv">Tetela de Ocampo es Pueblo Mágico y tiene de sobra para llenar un fin de semana.</p>
+    <ul class="near rv">
+      <li><b>Cascada de Aconco</b><span>En Xaltatempa de Lucas, con rapel y tirolesa para quien quiera adrenalina.</span></li>
+      <li><b>Grutas de Acocomoca</b><span>En Carreragco. Tienen un río subterráneo corriendo por dentro.</span></li>
+      <li><b>Cañón de Xaltatempa</b><span>Paredones de roca y caminata, para quien va por el paisaje.</span></li>
+      <li><b>Museo de Los Tres Juanes</b><span>Arriba del Palacio Municipal: piezas prehispánicas, un cañón y la historia liberal del pueblo.</span></li>
+      <li><b>Parroquia de Santa María de la Asunción</b><span>Vale subir al campanario por la vista del valle.</span></li>
+      <li><b>Mercado y artesanías</b><span>Los domingos ponen puestos frente al Palacio. Busca los vinos de frutas y los tejidos de lana.</span></li>
+    </ul>
+    <p class="soft" style="margin-top:1.6rem">Pregúntanos por WhatsApp y te decimos cómo llegar a cada uno desde el rancho.</p>
+  </div>
+</section>
+
+<!-- ===================== CÓMO LLEGAR ===================== -->
+<section>
   <div class="wrap prose rv">
+    <p class="kicker">Ubicación</p>
     <h2>Cómo llegar</h2>
-    <p>Estamos en Puente Seco, en el municipio de Tetela de Ocampo, dentro de la Sierra Norte de Puebla. Los últimos tramos son de terracería entre pinos.</p>
-    <p class="soft">Al confirmar tu reservación te mandamos la ubicación exacta y las indicaciones por WhatsApp.</p>
+    <p>Estamos en Puente Seco, en el municipio de Tetela de Ocampo, dentro de la Sierra Norte de Puebla. Los últimos tramos son de terracería entre pinos, así que ven con calma.</p>
+    <p class="hint">Al confirmar tu reservación te mandamos la ubicación exacta y las indicaciones por WhatsApp.</p>
     <a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=Puente+Seco%2C+Tetela+de+Ocampo%2C+Puebla" target="_blank" rel="noopener">Abrir en Google Maps</a>
   </div>
 </section>
 
-<section>
+<!-- ===================== CONDICIONES ===================== -->
+<section id="condiciones" class="sec-alt">
   <div class="wrap">
+    <p class="kicker rv">Antes de venir</p>
+    <h2 class="rv">Condiciones de hospedaje</h2>
+    <ul class="rules rv">
+      <li><b>Entrada y salida</b><span>La cabaña para dos no tiene horario fijo de entrada. Para la familiar acordamos la hora por mensaje al confirmar.</span></li>
+      <li><b>Cómo se aparta</b><span>Con un anticipo por transferencia bancaria. Hasta que lo recibimos, las fechas quedan apartadas.</span></li>
+      <li><b>Cómo se paga el resto</b><span>En efectivo al llegar, o por transferencia si lo prefieres.</span></li>
+      <li><b>Limpieza</b><span>Se cobra aparte del precio por noche. El monto depende de la cabaña y de cuántas noches se queden.</span></li>
+      <li><b>Mascotas</b><span>Bienvenidas en la cabaña familiar, sin cargo. Te pedimos que no se suban a las camas y que recojas lo que dejen en el jardín.</span></li>
+      <li><b>Capacidad</b><span>Para dos: máximo 2 personas. Familiar: de 4 a 8. Si vienen más, avísanos antes y vemos qué se puede hacer.</span></li>
+      <li><b>Cuidado del lugar</b><span>Los daños a mobiliario o instalaciones se cobran por separado. La chimenea y la parrilla se usan bajo tu responsabilidad.</span></li>
+      <li><b>Cancelaciones</b><span>Escríbenos en cuanto sepas. Te explicamos las condiciones al momento de apartar tus fechas.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== PREGUNTAS FRECUENTES ===================== -->
+<section id="faq">
+  <div class="wrap">
+    <p class="kicker rv">Dudas</p>
     <h2 class="rv">Preguntas frecuentes</h2>
     <div class="faq rv">
       <details><summary>¿Cómo se paga?</summary><div class="ans"><div>
-        <p>Se aparta con una transferencia bancaria y el resto se paga en efectivo al llegar. Te mandamos los datos de la cuenta por WhatsApp cuando confirmes tus fechas.</p>
+        <p>Se aparta con transferencia bancaria y el resto se cubre en efectivo al llegar. Los datos de la cuenta te los mandamos por WhatsApp cuando confirmes tus fechas. No manejamos pagos en línea por el momento.</p>
       </div></div></details>
       <details><summary>¿A qué hora puedo llegar?</summary><div class="ans"><div>
-        <p>En la cabaña para dos no hay horario fijo de entrada: llegas a la hora que te acomode. Para la familiar coordinamos la hora por mensaje.</p>
+        <p>En la cabaña para dos no hay horario de entrada: llegas a la hora que te acomode, de día o de noche. Para la familiar coordinamos la hora por mensaje para recibirte bien.</p>
       </div></div></details>
       <details><summary>¿Puedo llevar a mi perro?</summary><div class="ans"><div>
-        <p>Sí, en la cabaña familiar. No cobramos extra por mascotas, solo pedimos que no se suban a las camas.</p>
+        <p>Sí, en la cabaña familiar y sin cargo extra. Solo te pedimos que no se suba a las camas y que recojas lo que deje en el jardín.</p>
       </div></div></details>
-      <details><summary>¿Qué incluye el precio?</summary><div class="ans"><div>
-        <p>El hospedaje, el wifi y el uso de todo lo de la cabaña. El minibar de la cabaña para dos corre por cuenta de la casa. El servicio de limpieza se cobra aparte.</p>
+      <details><summary>¿Las cabañas tienen cocina?</summary><div class="ans"><div>
+        <p>Las dos tienen mini cocina equipada, así que puedes preparar tus alimentos. Muchos huéspedes llegan con su despensa comprada en Tetela de Ocampo.</p>
       </div></div></details>
-      <details><summary>¿Hay dónde comprar comida cerca?</summary><div class="ans"><div>
-        <p>Las dos cabañas tienen mini cocina, así que muchos huéspedes llegan con su despensa desde Tetela de Ocampo. Pregúntanos por mensaje y te decimos qué encuentras cerca.</p>
+      <details><summary>¿Qué tan complicado es el camino?</summary><div class="ans"><div>
+        <p>Los últimos tramos son de terracería entre pinos. Se puede llegar en coche normal manejando con calma. Si vienes de noche o después de lluvia, avísanos y te damos indicaciones más detalladas.</p>
+      </div></div></details>
+      <details><summary>¿Hay señal de celular y wifi?</summary><div class="ans"><div>
+        <p>Las dos cabañas tienen wifi. La señal de celular varía según la compañía, así que lo más seguro es escribirnos por WhatsApp cuando estés conectado.</p>
       </div></div></details>
       <details><summary>¿Se puede rentar por semana o por mes?</summary><div class="ans"><div>
-        <p>Sí, la cabaña familiar. Escríbenos con las fechas y te armamos un precio para toda la estancia.</p>
+        <p>Sí, la cabaña familiar. Para estancias de más de una semana manejamos precio cerrado en lugar de cobro por noche. Mándanos tus fechas y te cotizamos.</p>
+      </div></div></details>
+      <details><summary>¿Puedo ir solo a pasar el día?</summary><div class="ans"><div>
+        <p>Por ahora rentamos por noche en adelante, no por horas ni por día. Si te interesa algo distinto, escríbenos y lo platicamos.</p>
       </div></div></details>
     </div>
   </div>
 </section>
 
-<section class="sec-dusk">
+<!-- ===================== CONTACTO ===================== -->
+<section id="contacto" class="sec-dusk">
   <div class="wrap prose rv">
+    <p class="kicker">Contacto</p>
     <h2>Aparta tus fechas</h2>
-    <p>Contestamos todos los días.</p>
+    <p>Contestamos todos los días. Si no respondemos luego luego, es porque andamos en el cerro: insiste.</p>
     <ul class="contact">
-      <li><small>WhatsApp y teléfono</small><a href="https://wa.me/527971218676">797 121 8676</a></li>
-      <li><small>Correo</small><a href="mailto:ranchoelparedon@gmail.com">ranchoelparedon@gmail.com</a></li>
-      <li><small>Instagram</small><a href="https://instagram.com/paredon.ranch" target="_blank" rel="noopener">@paredon.ranch</a></li>
+      <li><small>WhatsApp y teléfono</small>
+        <a href="https://wa.me/527971218676">797 121 8676</a></li>
+      <li><small>Correo</small>
+        <a href="mailto:ranchoelparedon@gmail.com">ranchoelparedon@gmail.com</a></li>
+      <li><small>Instagram</small>
+        <a href="https://instagram.com/paredon.ranch" target="_blank" rel="noopener">@paredon.ranch</a></li>
+      <li><small>Ubicación</small>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Puente+Seco%2C+Tetela+de+Ocampo%2C+Puebla" target="_blank" rel="noopener">Puente Seco, Tetela de Ocampo</a></li>
     </ul>
   </div>
 </section>
 
 <footer>
-  <div class="wrap"><p style="margin:0">Rancho El Paredón · Puente Seco, Tetela de Ocampo, Puebla · Precios en pesos mexicanos</p></div>
+  <div class="wrap">
+    <p style="margin:0 0 .4rem">
+      <strong style="color:var(--deep-ink)">Rancho El Paredón</strong> · Puente Seco, Tetela de Ocampo, Puebla
+    </p>
+    <p style="margin:0">
+      Precios en pesos mexicanos ·
+      <a href="#condiciones">Condiciones</a> ·
+      <a href="https://wa.me/527971218676">WhatsApp</a> ·
+      <a href="https://instagram.com/paredon.ranch" target="_blank" rel="noopener">Instagram</a>
+    </p>
+  </div>
 </footer>
 
-<div class="bar" id="bar">
-  <a href="#reservar">Ver fechas y precios</a>
-</div>
+<div class="bar" id="bar"><a href="#reservar">Ver fechas y precios</a></div>
 
 <div class="lb" id="lb"><button id="lbx" aria-label="Cerrar">&times;</button><img id="lbi" src="" alt=""></div>
+
 <script src="script.js"></script>
 </body>
 </html>
