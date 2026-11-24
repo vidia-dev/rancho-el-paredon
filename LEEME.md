@@ -70,7 +70,36 @@ Cuando ya tengas las seis, cambia el contenedor `<div class="soonwrap rv">` por
 `<div class="grid rv">` para que se vean igual que la galería de arriba y se
 puedan abrir en grande.
 
-## Ajustes del calendario
+## Fechas no disponibles — esto lo vas a usar seguido
+
+En `script.js`, busca `NO_DISPONIBLES`. Ahí marcas los periodos que ya
+están apartados. Se ven tachados en el calendario y no se pueden elegir.
+
+    var NO_DISPONIBLES = [
+      ['2026-12-01', '2026-12-31']    // diciembre 2026 completo
+    ];
+
+Cada renglón es un periodo, con fecha de inicio y de fin. Las dos fechas
+quedan incluidas. El formato es AAAA-MM-DD, siempre con dos dígitos en mes
+y día.
+
+Para agregar más periodos, pon un renglón por cada uno, separados por coma:
+
+    var NO_DISPONIBLES = [
+      ['2026-12-01', '2026-12-31'],   // diciembre completo
+      ['2027-01-01', '2027-01-06'],   // puente de Reyes
+      ['2027-02-14', '2027-02-14']    // un solo día
+    ];
+
+El último renglón va sin coma al final.
+
+Cuando se libere una fecha, borra su renglón y haz push. En uno o dos
+minutos el calendario ya la muestra disponible.
+
+**Nota:** esta lista es la misma para las dos cabañas. Si se te llena una
+sola y la otra sigue libre, avísame y le pongo calendario por separado.
+
+## Otros ajustes del calendario
 
 En `script.js`, hasta arriba de la sección CALENDARIO:
 

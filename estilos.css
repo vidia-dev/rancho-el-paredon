@@ -224,6 +224,18 @@ h2{font-weight:700;font-size:clamp(1.85rem,6.5vw,2.8rem);line-height:1.03;
   transition:background-color .16s ease,color .16s ease,transform .16s ease}
 .day:hover:not(.off){background:var(--bg-alt)}
 .day.off{color:var(--ink-soft);opacity:.3;cursor:default}
+.day.taken{color:var(--ink-soft);opacity:.45;cursor:not-allowed;position:relative}
+.day.taken::after{content:"";position:absolute;left:22%;right:22%;top:50%;
+  height:1.5px;background:currentColor;transform:rotate(-16deg)}
+.leyenda{display:flex;flex-wrap:wrap;gap:.3rem .9rem;margin:.65rem 0 0;
+  font-family:"Bricolage Grotesque",sans-serif;font-size:.8rem;color:var(--ink-soft)}
+.leyenda span{display:inline-flex;align-items:center;gap:.35rem}
+.leyenda i{width:.85rem;height:.85rem;border-radius:3px;display:inline-block;font-style:normal}
+.leyenda .libre{border:1.5px solid var(--line)}
+.leyenda .sel{background:var(--teja)}
+.leyenda .no{background:var(--line);opacity:.55;position:relative}
+.leyenda .no::after{content:"";position:absolute;left:10%;right:10%;top:50%;
+  height:1.5px;background:var(--ink-soft);transform:rotate(-16deg)}
 .day.mid{background:var(--teja-soft);border-radius:0}
 .day.edge{background:var(--teja);color:#fff;transform:scale(1.04)}
 .day.s1{border-radius:var(--radio) 0 0 var(--radio)}

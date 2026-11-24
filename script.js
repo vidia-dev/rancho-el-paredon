@@ -80,6 +80,45 @@
   var MAX_NOCHES = 30;   // arriba de esto mandamos a cotizar estancia larga
   var MAX_MESES = 18;    // hasta dónde se puede navegar hacia adelante
 
+  /* ------------------------------------------------------------
+     FECHAS NO DISPONIBLES
+     Cada renglón es un periodo cerrado: ['AAAA-MM-DD', 'AAAA-MM-DD'].
+     Las dos fechas quedan incluidas. Para un solo día, repite la fecha.
+     Agrega o borra renglones según se vayan ocupando las cabañas.
+     Ejemplos:
+       ['2027-01-01', '2027-01-06'],   // vacaciones de enero
+       ['2027-02-14', '2027-02-14'],   // un solo día
+     ------------------------------------------------------------ */
+  var NO_DISPONIBLES = [
+    ['2026-12-01', '2026-12-31']    // diciembre 2026 completo
+  ];
+
+  // Convierte los renglones de arriba a fechas reales, una sola vez
+  var ocupadas = NO_DISPONIBLES.map(function (r) {
+    function aFecha(s) {
+      var p = s.split('-');
+      return new Date(+p[0], +p[1] - 1, +p[2]);
+    }
+    return { ini: aFecha(r[0]), fin: aFecha(r[1]) };
+  });
+
+  function ocupada(d) {
+    for (var i = 0; i < ocupadas.length; i++) {
+      if (d >= ocupadas[i].ini && d <= ocupadas[i].fin) return true;
+    }
+    return false;
+  }
+
+  // ¿Hay algún día ocupado entre la llegada y la salida?
+  function chocaConOcupadas(desde, hasta) {
+    var d = new Date(desde.getTime());
+    while (d < hasta) {
+      if (ocupada(d)) return true;
+      d.setDate(d.getDate() + 1);
+    }
+    return false;
+  }
+
   var hoy = new Date(); hoy.setHours(0, 0, 0, 0);
   var limite = new Date(hoy.getFullYear(), hoy.getMonth() + MAX_MESES, 1);
   var vista = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
@@ -123,16 +162,21 @@
       for (var d = 1; d <= total; d++) {
         var dt = new Date(y, m, d);
         var pasado = dt < hoy;
+        var tomada = !pasado && ocupada(dt);
         var cls = 'day';
+        var extra = '';
         if (pasado) {
           cls += ' off';
+        } else if (tomada) {
+          cls += ' taken';
+          extra = ' title="No disponible" aria-label="' + d + ', no disponible"';
         } else {
           if (llegada && salida && dt > llegada && dt < salida) cls += ' mid';
           if (igual(dt, llegada)) cls += ' edge ' + (salida ? 's1' : 'solo');
           if (igual(dt, salida)) cls += ' edge s2';
         }
-        html += '<button type="button" class="' + cls + '" ' +
-                (pasado ? 'disabled' : 'data-d="' + d + '"') + '>' + d + '</button>';
+        html += '<button type="button" class="' + cls + '"' + extra + ' ' +
+                (pasado || tomada ? 'disabled' : 'data-d="' + d + '"') + '>' + d + '</button>';
       }
       daysEl.innerHTML = html;
       prev.disabled = (y === hoy.getFullYear() && m === hoy.getMonth());
@@ -148,13 +192,20 @@
     // Primer toque, o reinicio si ya había rango, o si tocan antes de la llegada
     if (!llegada || (llegada && salida) || dt <= llegada) {
       llegada = dt; salida = null;
+      formmsg.textContent = '';
+      formmsg.className = 'formmsg';
+    } else if (chocaConOcupadas(llegada, dt)) {
+      // La estancia pasaría por días que ya están apartados
+      formmsg.textContent = 'Entre esas fechas hay días que ya están apartados. Elige otro periodo.';
+      formmsg.className = 'formmsg bad';
+      llegada = dt; salida = null;
     } else {
       salida = dt;
+      formmsg.textContent = '';
+      formmsg.className = 'formmsg';
     }
     pintarCalendario(false);
     actualizar();
-    formmsg.textContent = '';
-    formmsg.className = 'formmsg';
   });
 
   prev.addEventListener('click', function () {
@@ -285,6 +336,10 @@
     var n = noches();
     if (!llegada || !salida) {
       formmsg.textContent = 'Elige tu día de llegada y tu día de salida en el calendario.';
+      formmsg.className = 'formmsg bad';
+      if (!fallas.length) fallas.push(daysEl);
+    } else if (chocaConOcupadas(llegada, salida)) {
+      formmsg.textContent = 'Entre esas fechas hay días que ya están apartados. Elige otro periodo.';
       formmsg.className = 'formmsg bad';
       if (!fallas.length) fallas.push(daysEl);
     } else if (n > MAX_NOCHES) {
