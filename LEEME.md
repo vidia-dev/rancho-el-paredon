@@ -125,6 +125,22 @@ El sitio está en GitHub Pages desde la rama `main`. Cada vez que hagas
 
 Desde IntelliJ: `Ctrl+K` para commit, `Ctrl+Shift+K` para push.
 
+### Si cambias estilos.css o script.js — IMPORTANTE
+
+Los navegadores guardan esos dos archivos en caché y siguen usando la
+versión vieja aunque subas una nueva. El síntoma es que el texto cambia
+pero el diseño o el comportamiento no.
+
+Para evitarlo, en `index.html` esos dos archivos llevan un número de
+versión al final:
+
+    <link rel="stylesheet" href="estilos.css?v=2">
+    <script src="script.js?v=2"></script>
+
+**Cada vez que modifiques el CSS o el JS, sube ese número** (a `?v=3`,
+luego `?v=4`, y así). Con eso el navegador los ve como archivos distintos
+y baja la versión nueva. Si solo cambias textos del HTML, no hace falta.
+
 ## Pendientes
 
 - Fotos del interior (recámara, baño, sala, jacuzzi, cocina, parrilla)
